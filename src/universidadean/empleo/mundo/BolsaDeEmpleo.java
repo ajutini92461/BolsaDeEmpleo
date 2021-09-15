@@ -170,20 +170,26 @@ public class BolsaDeEmpleo {
         int ini = 0;
         int fin = aspirantes.size() - 1;
         int mitad;
-        while (ini <= fin) {
-            mitad = (ini + fin) / 2;
-            if (aspirantes.get(mitad).darNombre().compareTo(nombre) == mitad)
-                return mitad;
-            else if ( mitad < aspirantes.get(mitad).darNombre().compareTo(nombre)) {
-                ini = mitad + 1;
-            }
-            else {
-                fin = mitad - 1;
+        int index = 0;
+        ordenarPorNombre();
+        for(Aspirante a: aspirantes) {
+            index++;
+            if(a.darNombre().equals(nombre)) {
+                while (ini <= fin) {
+                    mitad = (ini + fin) / 2;
+                    if (index - 1 == mitad)
+                        return mitad;
+                    else if ( mitad < index - 1) {
+                        ini = mitad + 1;
+                    }
+                    else {
+                        fin = mitad - 1;
+                    }
+                }
             }
         }
         return posicion;
     }
-
 
     /**
      * Busca el aspirante que tenga la menor edad en la bolsa.
@@ -247,9 +253,11 @@ public class BolsaDeEmpleo {
      */
     public boolean contratarAspirante(String nombre) {
         boolean contratado = false;
-        if(buscarBinarioPorNombre(nombre) > -1){
-            aspirantes.remove(buscarBinarioPorNombre(nombre));
-            return true;
+        if(nombre!=null) {
+            if(buscarBinarioPorNombre(nombre) > -1){
+                aspirantes.remove(buscarBinarioPorNombre(nombre));
+                return true;
+            }
         }
         return contratado;
     }
@@ -264,7 +272,7 @@ public class BolsaDeEmpleo {
     public int eliminarAspirantesPorExperiencia(int aniosExperiencia) {
         int eliminados = 0;
         int cont = 0;
-        for(int i = aspirantes.size()-1; i >= 0; --i){
+        for(int i = aspirantes.size() - 1; i >= 0; --i){
             if(aspirantes.get(i).darAniosExperiencia() < aniosExperiencia){
                 aspirantes.remove(aspirantes.get(i));
                 cont += 1;
